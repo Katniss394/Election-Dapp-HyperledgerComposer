@@ -1,0 +1,26 @@
+namespace org.example.voting
+
+participant voter identified by voterID {
+  o String voterID
+  o String fullName
+}
+ 
+participant pollWatcher identified by watcherID {
+  o String watcherID
+  o String fullName
+}
+
+asset ifVoted identified by voterID {
+  o String voterID
+  o Boolean votedOrNot
+}
+ 
+asset candidateVote identified by politicalParty {
+  o String politicalParty
+  o Integer totalVote
+}
+
+transaction vote {
+  --> candidateVote candidateVoteAsset
+  --> ifVoted ifVotedAsset
+}

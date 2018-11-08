@@ -1,0 +1,65 @@
+rule EverybodySeesNetwork {
+  description: "Trader can see and update their own record only"
+  participant: "org.example.voting.**"
+  operation: READ
+  resource: "org.hyperledger.composer.system.**"
+  action: ALLOW
+}
+
+rule PollWatchersSeeStatus {
+  description: "Trader can see and update their own record only"
+  participant: "org.example.voting.pollWatcher"
+  operation: READ
+  resource: "org.example.voting.**"
+  action: ALLOW
+}
+
+rule VotersCanVote1 {
+  description: "Trader can see and update their own record only"
+  participant: "org.example.voting.voter"
+  operation: CREATE
+  resource: "org.hyperledger.composer.system.HistorianRecord"
+  action: ALLOW
+}
+
+rule VotersCanVote2 {
+  description: "Trader can see and update their own record only"
+  participant: "org.example.voting.voter"
+  operation: CREATE
+  resource: "org.example.voting.vote"
+  action: ALLOW
+}
+
+rule VotersCanVote3 {
+  description: "Trader can see and update their own record only"
+  participant(t): "org.example.voting.voter"
+  operation: READ,UPDATE
+  resource(c): "org.example.voting.ifVoted"
+  condition: (c.voterID == t.getIdentifier())
+  action: ALLOW
+}
+
+rule VotersCanVote4 {
+  description: "Voters can cast votes"
+  participant: "org.example.voting.voter"
+  operation: READ,UPDATE
+  resource: "org.example.voting.candidateVote"
+  action: ALLOW
+}
+
+
+rule NetworkAdminUser {
+    description: "Grant business network administrators full access to user resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+rule NetworkAdminSystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
